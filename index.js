@@ -25,8 +25,8 @@ async function run() {
 
         app.get('/category/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id) }
-            const category = await categoryCollection.findOne(query);
+            const query = { service_id: id }
+            const category = await categorydataCollection.find(query).toArray();
             res.send(category)
         })
     }
