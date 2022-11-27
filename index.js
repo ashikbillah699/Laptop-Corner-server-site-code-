@@ -15,6 +15,8 @@ async function run() {
     try {
         const categoryCollection = client.db('laptopCorder').collection('laptopData')
         const categorydataCollection = client.db('laptopCorder').collection('categorydata')
+        const bookingCollection = client.db('laptopCorder').collection('bookingData')
+        const usersCollection = client.db('laptopCorder').collection('users')
 
         app.get('/categorys', async (req, res) => {
             const query = {};
@@ -28,6 +30,36 @@ async function run() {
             const query = { service_id: id }
             const category = await categorydataCollection.find(query).toArray();
             res.send(category)
+        })
+
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email }
+            const bookings = await bookingCollection.find(query).toArray()
+            res.send(bookings)
+        })
+
+        app.post('/bookings', async (req, res) => {
+            const booking = req.body;
+            // console.log(booking);
+            // const query = {
+            //     _id: booking._id
+            // }
+
+            // const allReadyBooked = await bookingCollection.findOne(query).toArray;
+
+            // if (allReadyBooked) {
+            //     const message = `All Ready booked ${booking._id}`
+            //     return res.send({ acknowledged: false, message })
+            // }
+
+            const result = await bookingCollection.insertOne(booking);
+            res.send(result);
+        })
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            const result = await usersCollection.insertOne(user)
+            res.send(result);
         })
     }
     finally {
