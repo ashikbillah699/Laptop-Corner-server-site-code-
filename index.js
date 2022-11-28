@@ -5,6 +5,7 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 5000;
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const { query } = require('express');
 
 app.use(cors());
 app.use(express.json())
@@ -35,6 +36,7 @@ async function run() {
         const categorydataCollection = client.db('laptopCorder').collection('categorydata')
         const bookingCollection = client.db('laptopCorder').collection('bookingData')
         const usersCollection = client.db('laptopCorder').collection('users')
+        const productCollection = client.db('laptopCorder').collection('product')
 
         app.get('/categorys', async (req, res) => {
             const query = {};
@@ -129,6 +131,25 @@ async function run() {
             const result = await usersCollection.updateOne(filter, updatedDoc, options);
             res.send(result);
         })
+
+        app.get('/categoryName', async (req, res) => {
+            const query = {}
+            const result = await categoryCollection.find(query).project({ title: 1 }).toArray();
+            res.send(result)
+        })
+
+        app.get('/product', async (req, res) => {
+            const query = {};
+            const product = await productCollection.find(query).toArray();
+            res.send(product)
+        })
+
+        app.post('/product', async (req, res) => {
+            const product = req.body;
+            const result = await productCollection.insertOne(product)
+            res.send(result)
+        })
+
     }
     finally {
 
