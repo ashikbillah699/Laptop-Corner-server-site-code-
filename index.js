@@ -153,15 +153,15 @@ async function run() {
             res.send(result)
         })
 
-        app.get('/product', async (req, res) => {
-            const query = { service_id: 1 };
-            const product = await productCollection.findOne(query).toArray();
-            res.send(product)
-        })
+        // app.get('/product', async (req, res) => {
+        //     const query = {};
+        //     const product = await productCollection.find(query).toArray();
+        //     res.send(product)
+        // })
 
         app.post('/product', async (req, res) => {
             const product = req.body;
-            const result = await productCollection.insertOne(product)
+            const result = await categorydataCollection.insertOne(product)
             res.send(result)
         })
 
