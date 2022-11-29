@@ -63,6 +63,14 @@ async function run() {
             res.send(bookings)
         })
 
+        app.delete('/bookings/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await bookingCollection.deleteOne(query);
+            console.log(result)
+            res.send(result);
+        })
+
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
             // console.log(booking);
@@ -93,13 +101,20 @@ async function run() {
             res.status(403).send({ accessToken: '' })
         })
 
+        app.delete('/users/:id', verifyJWT, async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) };
+            const result = await usersCollection.deleteOne(filter);
+            res.send(result);
+        })
+
         app.get('/users', async (req, res) => {
             const query = {};
             const users = await usersCollection.find(query).toArray()
             res.send(users)
         })
 
-        app.post('/users', async (req, res) => {
+        app.post('/users', verifyJWT, async (req, res) => {
             const user = req.body;
             const result = await usersCollection.insertOne(user)
             res.send(result);
@@ -139,8 +154,8 @@ async function run() {
         })
 
         app.get('/product', async (req, res) => {
-            const query = {};
-            const product = await productCollection.find(query).toArray();
+            const query = { service_id: 1 };
+            const product = await productCollection.findOne(query).toArray();
             res.send(product)
         })
 
