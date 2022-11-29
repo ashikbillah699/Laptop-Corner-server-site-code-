@@ -58,7 +58,7 @@ async function run() {
             if (email !== decodedEmail) {
                 return res.status(403).send({ message: 'forbidden access' })
             }
-            const query = { email: email }
+            const query = {}
             const bookings = await bookingCollection.find(query).toArray()
             res.send(bookings)
         })
@@ -134,7 +134,7 @@ async function run() {
 
         app.get('/categoryName', async (req, res) => {
             const query = {}
-            const result = await categoryCollection.find(query).project({ title: 1 }).toArray();
+            const result = await categoryCollection.find(query).project({ title: 1, service_id: 1 }).toArray();
             res.send(result)
         })
 
