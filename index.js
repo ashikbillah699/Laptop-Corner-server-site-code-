@@ -36,7 +36,7 @@ async function run() {
         const categorydataCollection = client.db('laptopCorder').collection('categorydata')
         const bookingCollection = client.db('laptopCorder').collection('bookingData')
         const usersCollection = client.db('laptopCorder').collection('users')
-        const productCollection = client.db('laptopCorder').collection('product')
+        // const productCollection = client.db('laptopCorder').collection('product')
 
         app.get('/categorys', async (req, res) => {
             const query = {};
